@@ -11,6 +11,7 @@
 #include "grid_input.h"
 
 void SearchOneMap(int map_num_);
+void PrintSumResult();            //打印结果统计
 
 //每一个cell的信息，使用结构体定义
 struct CellInfo {
@@ -42,14 +43,6 @@ class Adaptive_Astar {
     //曼哈顿距离
     return fabs(current.first - goal_pos_.first) +
            fabs(current.second - goal_pos_.second);
-
-    // //欧式距离平方
-    // return pow((current.first - goal.first), 2) +
-    //             pow((current.second - goal.second), 2);
-
-    // //欧式距离
-    // return sqrt(pow((current.first - goal.first), 2) +
-    //             pow((current.second - goal.second), 2));
   }
   //**************************************//
 
@@ -60,6 +53,7 @@ class Adaptive_Astar {
   void StartMove() {
     current_start_ = current_path_.back();
     current_path_.pop_back();
+    ++move_step_nums_;
   }
 
   bool ArriveGoal() { return current_start_ == goal_pos_; }
@@ -100,6 +94,7 @@ class Adaptive_Astar {
   inline std::vector<Points> get_current_path() const { return current_path_; }
   inline int get_all_expand_nums() const { return all_expand_points_count_; }
   inline int get_search_nums() const { return search_nums_count_; }
+  inline int get_move_step_nums() const { return move_step_nums_; }
   //************************************//
 
  private:
@@ -111,7 +106,8 @@ class Adaptive_Astar {
   std::vector<Points> current_obstacle_list_;
   int current_expand_points_count_,  //一次算法中的expand计数
       all_expand_points_count_,      //整体算法中的expand计数
-      search_nums_count_;            //搜索次数计数
+      search_nums_count_,            //搜索次数计数
+      move_step_nums_;                         //移动步数
 
   // for Adaptive A* algorithm
   double last_path_minimal_cost_;  //上一条路径中的最小花费
